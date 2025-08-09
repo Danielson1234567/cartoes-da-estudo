@@ -1,11 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-  />
-  <title>Flashcard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Física em Nossas Vidas - Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00264d, #004080);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .card {
+            background: #003366;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .categoria {
+            background: #0066cc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .resposta {
+            display: none;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #b3d9ff;
+        }
+    </style>
 </head>
+<body>
+
+    <h1>Física em Nossas Vidas</h1>
+    <div class="container">
+        <div class="card" onclick="toggleResposta(this)">
+            <div class="categoria">Energia</div>
+            <div class="pergunta">Como a energia elétrica chega até nossa casa?</div>
+            <div class="resposta">A energia é gerada em usinas e transmitida por cabos até chegar à rede elétrica residencial.</div>
+        </div>
+
+        <div class="card" onclick="toggleResposta(this)">
+            <div class="categoria">Movimento</div>
+            <div class="pergunta">O que é a 1ª Lei de Newton?</div>
+            <div class="resposta">Um corpo em repouso permanece em repouso e um corpo em movimento continua em movimento a menos que uma força atue sobre ele.</div>
+        </div>
+
+        <div class="card" onclick="toggleResposta(this)">
+            <div class="categoria">Óptica</div>
+            <div class="pergunta">Por que vemos um arco-íris?</div>
+            <div class="resposta">O arco-íris é formado pela refração, reflexão e dispersão da luz solar nas gotas de água.</div>
+        </div>
+
+        <div class="card" onclick="toggleResposta(this)">
+            <div class="categoria">Termodinâmica</div>
+            <div class="pergunta">Por que o gelo derrete ao calor?</div>
+            <div class="resposta">O calor aumenta a energia das moléculas, rompendo a estrutura sólida do gelo.</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleResposta(card) {
+            let resposta = card.querySelector(".resposta");
+            resposta.style.display = (resposta.style.display === "block") ? "none" : "block";
+        }
+    </script>
+
+</body>
+</html>
