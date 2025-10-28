@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Física em Nossas Vidas - Flashcards</title>
     <style>
-        /* ======== ESTILOS GERAIS ======== */
+        /* ======== GERAIS ======== */
+        :root{
+            --card-front: rgba(0,51,102,0.95);
+            --card-back: rgba(0,64,128,0.95);
+            --accent: #0077ff;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: 
+            background:
                 linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Atom.svg/800px-Atom.svg.png') 
+                url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Atom.svg/800px-Atom.svg.png')
                 no-repeat center center fixed;
             background-size: cover;
-            color: white;
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -36,10 +42,12 @@
             max-width: 1100px;
         }
 
-        /* ======== FLASHCARDS ======== */
+        /* ======== CARTÃO ======== */
         .card {
             perspective: 1000px;
-            cursor: pointer;
+            /* tornar toda a área "clicável" */
+            user-select: none;
+            outline: none;
         }
 
         .inner {
@@ -48,7 +56,7 @@
             height: 220px;
             text-align: center;
             transform-style: preserve-3d;
-            transition: transform 0.8s;
+            transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
         }
 
         .card.flipped .inner {
@@ -60,126 +68,184 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            background: rgba(0, 51, 102, 0.9);
             border-radius: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 15px;
-            box-shadow: 0px 0px 15px rgba(255,255,255,0.15);
-            transition: box-shadow 0.3s, transform 0.3s;
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.45);
+            transition: box-shadow 0.25s, transform 0.25s;
+            pointer-events: none; /* evitar interceptar o foco, o .card lida com interação */
         }
 
-        .card:hover .front, .card:hover .back {
-            box-shadow: 0px 0px 25px rgba(255,255,255,0.35);
-            transform: scale(1.03);
+        /* permitem que sombra e escala ocorram quando o pai estiver em hover/foque */
+        .card:hover .front,
+        .card:focus .front,
+        .card:hover .back,
+        .card:focus .back {
+            box-shadow: 0px 12px 30px rgba(0,0,0,0.6);
+            transform: translateY(-4px);
         }
+
+        .front { background: var(--card-front); color: #fff; }
+        .back { background: var(--card-back); color: #cfe9ff; transform: rotateY(180deg); }
 
         .categoria {
-            background: #0077ff;
+            background: var(--accent);
             padding: 6px 12px;
             border-radius: 8px;
             margin-bottom: 10px;
             font-size: 0.9em;
-            font-weight: bold;
+            font-weight: 700;
+            pointer-events: none;
         }
 
-        .back {
-            background: rgba(0, 64, 128, 0.9);
-            transform: rotateY(180deg);
-            color: #cce6ff;
+        /* ======== ACESSIBILIDADE e FOCO ======== */
+        .card[role="button"] {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card:focus {
+            outline: 3px solid rgba(0,123,255,0.25);
+            outline-offset: 4px;
+            border-radius: 12px;
         }
 
         /* ======== RESPONSIVIDADE ======== */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.6em;
-            }
-            .inner {
-                height: 180px;
-            }
+            h1 { font-size: 1.6em; }
+            .inner { height: 180px; }
         }
     </style>
 </head>
 <body>
 
     <h1>Física em Nossas Vidas ⚛️</h1>
-    <div class="container">
-        
-        <div class="card" onclick="this.classList.toggle('flipped')">
+    <div class="container" id="cards">
+        <!-- Cartões existentes -->
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="0">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Energia</div>
                     <div>Como a energia elétrica chega até nossa casa?</div>
                 </div>
-                <div class="back">
-                    A energia é gerada em usinas e transmitida por cabos até chegar à rede elétrica residencial.
-                </div>
+                <div class="back">A energia é gerada em usinas e transmitida por cabos até chegar à rede elétrica residencial.</div>
             </div>
         </div>
 
-        <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="1">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Movimento</div>
                     <div>O que é a 1ª Lei de Newton?</div>
                 </div>
-                <div class="back">
-                    Um corpo em repouso permanece em repouso e um corpo em movimento continua em movimento a menos que uma força atue sobre ele.
-                </div>
+                <div class="back">Um corpo em repouso permanece em repouso e um corpo em movimento continua em movimento a menos que uma força atue sobre ele.</div>
             </div>
         </div>
 
-        <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="2">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Óptica</div>
                     <div>Por que vemos um arco-íris?</div>
                 </div>
-                <div class="back">
-                    O arco-íris é formado pela refração, reflexão e dispersão da luz solar nas gotas de água.
-                </div>
+                <div class="back">O arco-íris é formado pela refração, reflexão e dispersão da luz solar nas gotas de água.</div>
             </div>
         </div>
 
-        <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="3">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Termodinâmica</div>
                     <div>Por que o gelo derrete ao calor?</div>
                 </div>
-                <div class="back">
-                    O calor aumenta a energia das moléculas, rompendo a estrutura sólida do gelo.
-                </div>
+                <div class="back">O calor aumenta a energia das moléculas, rompendo a estrutura sólida do gelo.</div>
             </div>
         </div>
 
-        <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="4">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Ondas</div>
                     <div>Como o som se propaga no ar?</div>
                 </div>
-                <div class="back">
-                    O som se propaga através de ondas mecânicas longitudinais que fazem as moléculas do ar vibrarem.
-                </div>
+                <div class="back">O som se propaga através de ondas mecânicas longitudinais que fazem as moléculas do ar vibrarem.</div>
             </div>
         </div>
 
-        <div class="card" onclick="this.classList.toggle('flipped')">
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="5">
             <div class="inner">
                 <div class="front">
                     <div class="categoria">Gravidade</div>
                     <div>Por que sentimos peso?</div>
                 </div>
-                <div class="back">
-                    Sentimos peso porque a gravidade da Terra puxa nosso corpo para o centro do planeta.
+                <div class="back">Sentimos peso porque a gravidade da Terra puxa nosso corpo para o centro do planeta.</div>
+            </div>
+        </div>
+
+        <!-- Dois novos cartões de estudo -->
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="6">
+            <div class="inner">
+                <div class="front">
+                    <div class="categoria">Circuitos</div>
+                    <div>O que é resistência elétrica?</div>
                 </div>
+                <div class="back">Resistência é a oposição oferecida por um material à passagem da corrente elétrica; medida em ohms (Ω).</div>
+            </div>
+        </div>
+
+        <div class="card" role="button" tabindex="0" aria-pressed="false" data-index="7">
+            <div class="inner">
+                <div class="front">
+                    <div class="categoria">Magnetismo</div>
+                    <div>Como funcionam os campos magnéticos?</div>
+                </div>
+                <div class="back">Campos magnéticos surgem ao redor de cargas em movimento e ímãs; exercem forças sobre cargas em movimento e outros ímãs.</div>
             </div>
         </div>
 
     </div>
 
+    <script>
+        // Pega todos os cartões e adiciona interação consistente (clique + teclado)
+        (function(){
+            const cards = Array.from(document.querySelectorAll('.card'));
+
+            function toggleCard(card){
+                const isFlipped = card.classList.toggle('flipped');
+                // atualiza atributo aria-pressed para acessibilidade
+                card.setAttribute('aria-pressed', String(isFlipped));
+            }
+
+            cards.forEach(card => {
+                // clique
+                card.addEventListener('click', (e) => {
+                    // prevenir dupla ação caso o click venha de um inner element
+                    toggleCard(card);
+                });
+
+                // teclado: Space ou Enter para girar
+                card.addEventListener('keydown', (e) => {
+                    if(e.code === 'Enter' || e.code === 'Space' || e.key === ' '){
+                        e.preventDefault(); // evita scroll com espaço
+                        toggleCard(card);
+                    }
+                    // opcional: ESC para fechar
+                    if((e.code === 'Escape' || e.key === 'Escape') && card.classList.contains('flipped')){
+                        card.classList.remove('flipped');
+                        card.setAttribute('aria-pressed', 'false');
+                    }
+                });
+            });
+
+            // Opcional: permitir fechar todos os cartões com Shift+F (exemplo)
+            document.addEventListener('keydown', (e) => {
+                if(e.shiftKey && e.key.toLowerCase() === 'f'){
+                    cards.forEach(c => { c.classList.remove('flipped'); c.setAttribute('aria-pressed', 'false'); });
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
